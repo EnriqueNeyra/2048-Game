@@ -255,19 +255,18 @@ function transpose() {
 
 function GenerateNewNumber() {
   var n = Math.random();
-  var row_col = {};
+  var row_col = [];
   for (var i = 0; i < game_array.length; i++) {
     for (var j = 0; j < game_array.length; j++) {
       if (game_array[i][j] == 0) {
-        row_col[i] = j;
+        row_col.push([i, j]);
       }
     }
   }
 
-  var keys = Object.keys(row_col);
-  var rand_key_index = Math.floor(Math.random() * keys.length)
-  var random_row_index = keys[rand_key_index];
-  var random_col_index = row_col[random_row_index];
+  var rand_2d_index = row_col[Math.floor(Math.random() * row_col.length)];
+  var random_row_index = rand_2d_index[0];
+  var random_col_index = rand_2d_index[1];
 
   if (n < 0.9) {
     game_array[random_row_index][random_col_index] = 2;
