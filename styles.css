@@ -2,6 +2,12 @@ h1 {
     text-align: center;
 }
 
+.score-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .grid-container {
     display: grid;
     width: 400px;

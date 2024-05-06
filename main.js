@@ -6,46 +6,58 @@ var game_array = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
 ];
+GenerateNewNumber();
+GenerateNewNumber();
+UpdateBoardAndScore();
 
-GenerateNewNumber();
-GenerateNewNumber();
-UpdateGridElements();
+document.querySelector("button").addEventListener("click", () => {
+  game_array = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+  score = 0;
+  GenerateNewNumber();
+  GenerateNewNumber();
+  UpdateBoardAndScore();
+});
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "ArrowUp") {
     ArrowUp();
     GenerateNewNumber();
-    UpdateGridElements();
-    console.log("Up Key");
-    console.log(`Score: ${score}`);
-    console.table(game_array);
+    UpdateBoardAndScore();
+    // console.log("Up Key");
+    // console.log(`Score: ${score}`);
+    // console.table(game_array);
   }
 
   if (e.key == "ArrowDown") {
     ArrowDown();
     GenerateNewNumber();
-    UpdateGridElements();
-    console.log("Down Key");
-    console.log(`Score: ${score}`);
-    console.table(game_array);
+    UpdateBoardAndScore();
+    // console.log("Down Key");
+    // console.log(`Score: ${score}`);
+    // console.table(game_array);
   }
 
   if (e.key == "ArrowLeft") {
     ArrowLeft();
     GenerateNewNumber();
-    UpdateGridElements();
-    console.log("Left Key");
-    console.log(`Score: ${score}`);
-    console.table(game_array);
+    UpdateBoardAndScore();
+    // console.log("Left Key");
+    // console.log(`Score: ${score}`);
+    // console.table(game_array);
   }
 
   if (e.key == "ArrowRight") {
     ArrowRight();
     GenerateNewNumber();
-    UpdateGridElements();
-    console.log("Right Key");
-    console.log(`Score: ${score}`);
-    console.table(game_array);
+    UpdateBoardAndScore();
+    // console.log("Right Key");
+    // console.log(`Score: ${score}`);
+    // console.table(game_array);
   }
 });
 
@@ -224,7 +236,8 @@ function ArrowLeft() {
   }
 }
 
-function UpdateGridElements() {
+function UpdateBoardAndScore() {
+  document.querySelector(".score").innerHTML = "Score: " + score;
   var elements = document.getElementsByClassName("grid-item");
   var k = 0;
 
@@ -270,8 +283,7 @@ function GenerateNewNumber() {
 
   if (n < 0.9) {
     game_array[random_row_index][random_col_index] = 2;
-  } 
-  else {
+  } else {
     game_array[random_row_index][random_col_index] = 4;
   }
 }
@@ -282,9 +294,7 @@ function CheckGameOver() {
   //if 2d array is still full, then game is over
 }
 
-//function 
-
-
+//function
 
 // ?BLUEPRINT FOR SIMPLIFIED ARROW KEY FUNCTION?
 // function AnyArrow() {
