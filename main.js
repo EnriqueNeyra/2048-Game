@@ -1,27 +1,14 @@
+//TODO:
+// 1. Change div grid-items background color based on value
+// 2. Find method to check if game is over
+
 var game_over = false;
 var score = 0;
-var game_array = [
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-  [0, 0, 0, 0],
-];
-GenerateNewNumber();
-GenerateNewNumber();
-UpdateBoardAndScore();
+var game_array;
 
-document.querySelector("button").addEventListener("click", () => {
-  game_array = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
-  score = 0;
-  GenerateNewNumber();
-  GenerateNewNumber();
-  UpdateBoardAndScore();
-});
+NewGame();
+
+document.querySelector("button").addEventListener("click", NewGame);
 
 document.addEventListener("keydown", (e) => {
   if (e.key == "ArrowUp") {
@@ -288,37 +275,22 @@ function GenerateNewNumber() {
   }
 }
 
+function NewGame() {
+  game_array = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ];
+  score = 0;
+  GenerateNewNumber();
+  GenerateNewNumber();
+  UpdateBoardAndScore();
+}
+
 function CheckGameOver() {
+  return false;
   // create copy of game array
   //run each arrow key function against the copy
   //if 2d array is still full, then game is over
 }
-
-//function
-
-// ?BLUEPRINT FOR SIMPLIFIED ARROW KEY FUNCTION?
-// function AnyArrow() {
-//   for (var i = 0; i < game_array.length; i++) {
-//     var row = game_array[i];
-
-//     // Remove all zeros
-//     for (var j = 0; j < row.length; j++) {
-//       if (row[j] == 0) {
-//         row.splice(j, 1);
-//       }
-//     }
-
-//     //Based on direction, combine numbers that are next to eachother
-//     for (var j = 3; j > 0; j--) {
-//       if (row[j] == row[j - 1]) {
-//         row[j] = row[j] * 2;
-//         score += row[j];
-//         row[j - 1] = 0;
-//       }
-//     }
-
-//     //Add back necessary zeros
-
-//     game_array[i] = row;
-//   }
-// }
