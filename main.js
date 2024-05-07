@@ -231,10 +231,10 @@ function UpdateBoardAndScore() {
   for (var i = 0; i < game_array.length; i++) {
     for (var j = 0; j < game_array.length; j++) {
       elements[k].innerHTML = "";
-      //elements[k].style.backgroundColor = rgba(255, 255, 255, 0.8);
+      elements[k].style.backgroundColor = '#FAF9F6'
       if (game_array[i][j] != 0) {
         el = game_array[i][j];
-        //elements[k].style.backgroundColor = rgba(255 * Math.pow(el, 1/4), 255 * Math.pow(el, 1/4), 255, 0.8);
+        elements[k].style.backgroundColor = rgbToHex([255, Math.floor(255 / Math.pow(el, 1/4)), Math.floor(255 / Math.pow(el, 1/4))]);
         elements[k].innerHTML = el;
       }
       k++;
@@ -287,6 +287,18 @@ function NewGame() {
   GenerateNewNumber();
   UpdateBoardAndScore();
 }
+
+function rgbToHex(rgb_array) {
+  var hex_code = "#";
+  for (var num of rgb_array)
+    {
+      var hex_val = num.toString(16);
+      hex_val.length == 1 ? "0" + hex_val : hex_val;
+      hex_code += hex_val;
+    }
+  return hex_code;
+}
+
 
 function CheckGameOver() {
   return false;
