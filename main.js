@@ -1,6 +1,4 @@
-//TODO:
-// 1. Change div grid-items background color based on value
-// 2. Find method to check if game is over
+// ------------------------------------------------------------              CONSTANTS                  ------------------------------------------------------------------------------
 
 var game_over = false;
 var score = 0;
@@ -8,10 +6,65 @@ var game_array;
 gameOverString = `Game Over
 Press New Game To Try Again`
 
+// ------------------------------------------------------------              LIVE METHODS                   ------------------------------------------------------------------------------
+// Starting Game At App Launch
 NewGame();
 
+// New Game Button Control
 document.querySelector("#new_game_button").addEventListener("click", NewGame);
 
+// UI Button Controls
+document.querySelector("#up-button").addEventListener("click", function(){
+  var gameOverStatus = isGameOver(game_array);
+  console.log(gameOverStatus)
+  if (isGameOver(game_array)){
+    window.alert(gameOverString);      
+  }                                                 
+  else{
+    ArrowUp();
+    GenerateNewNumber();
+    UpdateBoardAndScore();
+  }
+});
+document.querySelector("#down-button").addEventListener("click", function(){
+  var gameOverStatus = isGameOver(game_array);
+  console.log(gameOverStatus)
+  if (isGameOver(game_array)){
+    window.alert(gameOverString);
+  }
+  else{
+    ArrowDown();
+    GenerateNewNumber();
+    UpdateBoardAndScore();
+  }
+});
+document.querySelector("#left-button").addEventListener("click", function(){
+  var gameOverStatus = isGameOver(game_array);
+  console.log(gameOverStatus)
+  if (isGameOver(game_array)){      
+    window.alert(gameOverString);
+  }
+  else{
+    ArrowLeft();
+    GenerateNewNumber();
+    UpdateBoardAndScore();
+  }
+});
+document.querySelector("#right-button").addEventListener("click", function(){
+  var gameOverStatus = isGameOver(game_array);
+  console.log(gameOverStatus)
+  if (isGameOver(game_array)){
+    console.log(isGameOver(game_array))
+    window.alert(gameOverString);
+  }
+  else{
+    ArrowRight();
+    GenerateNewNumber();
+    UpdateBoardAndScore();
+  }
+});
+
+// Keyboard Button Controls
 document.addEventListener("keydown", (e) => {
   if (e.key == "ArrowUp") {
     var gameOverStatus = isGameOver(game_array);
@@ -23,9 +76,6 @@ document.addEventListener("keydown", (e) => {
       ArrowUp();
       GenerateNewNumber();
       UpdateBoardAndScore();
-      // console.log("Up Key");
-      // console.log(`Score: ${score}`);
-      // console.table(game_array);
     }
   }
 
@@ -39,9 +89,6 @@ document.addEventListener("keydown", (e) => {
       ArrowDown();
       GenerateNewNumber();
       UpdateBoardAndScore();
-      // console.log("Up Key");
-      // console.log(`Score: ${score}`);
-      // console.table(game_array);
     }
   }
 
@@ -55,9 +102,6 @@ document.addEventListener("keydown", (e) => {
       ArrowLeft();
       GenerateNewNumber();
       UpdateBoardAndScore();
-      // console.log("Up Key");
-      // console.log(`Score: ${score}`);
-      // console.table(game_array);
     }
   }
 
@@ -72,101 +116,36 @@ document.addEventListener("keydown", (e) => {
       ArrowRight();
       GenerateNewNumber();
       UpdateBoardAndScore();
-      // console.log("Up Key");
-      // console.log(`Score: ${score}`);
-      // console.table(game_array);
     }
   }
 });
+
+
+// ------------------------------------------------------------              FUNCTIONS                   ------------------------------------------------------------------------------
+function ArrowRight() {
+  
+  for (var i = 0; i < game_array.length; i++) {
+    var row = game_array[i];
+    MergeRowLeftToRight(row)
+
+    game_array[i] = row;
+  }
+}
 
 function ArrowDown() {
   var temp_arr = game_array.slice();
   for (var i = 0; i < game_array.length; i++) {
     var new_row = new Array(game_array.length);
+    // Transposing columns to rows
     for (var j = 0; j < game_array.length; j++) {  
       new_row[j] = temp_arr[j][i];
     }
 
-    // Move all non-zero tiles to the right
-    // Loop through the row from right to left. Decrement the row you are checking, and if non zero, decrement the row that you assign to. 
-    // In the case of a full non-zero row, the reassignation index stays the same as the checking index, so you continue to reassign the same cell with the same value
-    var move_target = 3; // 
-    for (var j = 3; j >= 0; j--) {
-      if (new_row[j] != 0) {
-        new_row[move_target] = new_row[j];
-        if (j < move_target) { // in the case that 
-          new_row[j] = 0;
-        }
-        move_target--;
-      }
-    }
-
-    //Combine tiles of the same value if they are next to eachother
-    for (var j = 3; j > 0; j--) {
-      if (new_row[j] == new_row[j - 1]) {
-        new_row[j] = new_row[j] * 2;
-        score += new_row[j];
-        new_row[j - 1] = 0;
-      }      
-    }
-
-    //Move all non-zero tiles to the right again
-    move_target = 3;
-    for (var j = 3; j >= 0; j--) {
-      if (new_row[j] != 0) {
-        new_row[move_target] = new_row[j];
-        if (j < move_target) {
-          new_row[j] = 0;
-        }
-        move_target--;
-      }
-    }
+    MergeRowLeftToRight(new_row)
 
     game_array[i] = new_row;
   }
-
   transpose();
-}
-
-function ArrowRight() {
-  for (var i = 0; i < game_array.length; i++) {
-    var row = game_array[i];
-
-    // Move all non-zero tiles to the right
-    var move_target = 3;
-    for (var j = 3; j >= 0; j--) {
-      if (row[j] != 0) {
-        row[move_target] = row[j];
-        if (j < move_target) {
-          row[j] = 0;
-        }
-        move_target--;
-      }
-    }
-
-    //Combine tiles of the same value if they are next to eachother
-    for (var j = 3; j > 0; j--) {
-      if (row[j] == row[j - 1]) {
-        row[j] = row[j] * 2;
-        score += row[j];
-        row[j - 1] = 0;
-      }
-    }
-
-    //Move all non-zero tiles to the right again
-    move_target = 3;
-    for (var j = 3; j >= 0; j--) {
-      if (row[j] != 0) {
-        row[move_target] = row[j];
-        if (j < move_target) {
-          row[j] = 0;
-        }
-        move_target--;
-      }
-    }
-
-    game_array[i] = row;
-  }
 }
 
 function ArrowUp() {
@@ -177,38 +156,7 @@ function ArrowUp() {
       new_row[j] = temp_arr[j][i];
     }
 
-    // Move all non-zero tiles to the left
-    var move_target = 0;
-    for (var j = 0; j <= 3; j++) {
-      if (new_row[j] != 0) {
-        new_row[move_target] = new_row[j];
-        if (j > move_target) {
-          new_row[j] = 0;
-        }
-        move_target++;
-      }
-    }
-
-    //Combine tiles of the same value if they are next to eachother
-    for (var j = 0; j < 3; j++) {
-      if (new_row[j] == new_row[j + 1]) {
-        new_row[j] = new_row[j] * 2;
-        score += new_row[j];
-        new_row[j + 1] = 0;
-      }
-    }
-
-    //Move all non-zero tiles to the left again
-    move_target = 0;
-    for (var j = 0; j <= 3; j++) {
-      if (new_row[j] != 0) {
-        new_row[move_target] = new_row[j];
-        if (j > move_target) {
-          new_row[j] = 0;
-        }
-        move_target++;
-      }
-    }
+    MergeRowRightToLeft(new_row)
 
     game_array[i] = new_row;
   }
@@ -219,38 +167,7 @@ function ArrowLeft() {
   for (var i = 0; i < game_array.length; i++) {
     var row = game_array[i];
 
-    // Move all non-zero tiles to the left
-    var move_target = 0;
-    for (var j = 0; j <= 3; j++) {
-      if (row[j] != 0) {
-        row[move_target] = row[j];
-        if (j > move_target) {
-          row[j] = 0;
-        }
-        move_target++;
-      }
-    }
-
-    //Combine tiles of the same value if they are next to eachother
-    for (var j = 0; j < 3; j++) {
-      if (row[j] == row[j + 1]) {
-        row[j] = row[j] * 2;
-        score += row[j];
-        row[j + 1] = 0;
-      }
-    }
-
-    //Move all non-zero tiles to the left again
-    move_target = 0;
-    for (var j = 0; j <= 3; j++) {
-      if (row[j] != 0) {
-        row[move_target] = row[j];
-        if (j > move_target) {
-          row[j] = 0;
-        }
-        move_target++;
-      }
-    }
+    MergeRowRightToLeft(row)
 
     game_array[i] = row;
   }
@@ -285,28 +202,6 @@ function transpose() {
     game_array[i] = new_row;
   }
 }
-
-// function GenerateNewNumber() {
-//   var n = Math.random();
-//   var row_col = [];
-//   for (var i = 0; i < game_array.length; i++) {
-//     for (var j = 0; j < game_array.length; j++) {
-//       if (game_array[i][j] == 0) {
-//         row_col.push([i, j]);
-//       }
-//     }
-//   }
-
-//   var rand_2d_index = row_col[Math.floor(Math.random() * row_col.length)];
-//   var random_row_index = rand_2d_index[0];
-//   var random_col_index = rand_2d_index[1];
-
-//   if (n < 0.9) {
-//     game_array[random_row_index][random_col_index] = 2;
-//   } else {
-//     game_array[random_row_index][random_col_index] = 4;
-//   }
-// }
 
 function GenerateNewNumber() {
   var n = Math.random(); // 0(inclusive) to 1(exclusive)
@@ -389,9 +284,82 @@ function isGameOver(game_array) {
   return true;
 }
 
+function MergeRowLeftToRight(row){
+    // Move all non-zero tiles to the right
+    var move_target = 3;
+    for (var j = 3; j >= 0; j--) {
+      if (row[j] != 0) {
+        row[move_target] = row[j];
+        if (j < move_target) {
+          row[j] = 0;
+        }
+        move_target--;
+      }
+    }
 
-// this was used to test the pop up feature with window.alert()
-// document.querySelector("#pop_up_button").addEventListener("click", PopUpTest);
-// function PopUpTest(){
-//   window.alert(gameOverString);
-// }
+    //Combine tiles of the same value if they are next to eachother
+    for (var j = 3; j > 0; j--) {
+      if (row[j] == row[j - 1]) {
+        row[j] = row[j] * 2;
+        score += row[j];
+        row[j - 1] = 0;
+      }
+    }
+
+    //Move all non-zero tiles to the right again
+    move_target = 3;
+    for (var j = 3; j >= 0; j--) {
+      if (row[j] != 0) {
+        row[move_target] = row[j];
+        if (j < move_target) {
+          row[j] = 0;
+        }
+        move_target--;
+      }
+    }
+}
+
+function MergeRowRightToLeft(row){
+  // Move all non-zero tiles to the left
+  var move_target = 0;
+  for (var j = 0; j <= 3; j++) {
+    if (row[j] != 0) {
+      row[move_target] = row[j];
+      if (j > move_target) {
+        row[j] = 0;
+      }
+      move_target++;
+    }
+  }
+
+  //Combine tiles of the same value if they are next to eachother
+  for (var j = 0; j < 3; j++) {
+    if (row[j] == row[j + 1]) {
+      row[j] = row[j] * 2;
+      score += row[j];
+      row[j + 1] = 0;
+    }
+  }
+
+  //Move all non-zero tiles to the left again
+  move_target = 0;
+  for (var j = 0; j <= 3; j++) {
+    if (row[j] != 0) {
+      row[move_target] = row[j];
+      if (j > move_target) {
+        row[j] = 0;
+      }
+      move_target++;
+    }
+  }
+}
+
+// Function to save the high score to local storage
+function saveHighScore(score) {
+  localStorage.setItem('highScore', score);
+}
+
+// Function to retrieve the high score from local storage
+function getHighScore() {
+  return localStorage.getItem('highScore');
+}
