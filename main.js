@@ -8,6 +8,7 @@ Press New Game To Try Again`
 
 // ------------------------------------------------------------              LIVE METHODS                   ------------------------------------------------------------------------------
 // Starting Game At App Launch
+window.onload = displayHighScore();
 NewGame();
 
 // New Game Button Control
@@ -281,7 +282,12 @@ function isGameOver(game_array) {
       }
   }
   // If no empty cells or neighbor cells with the same value are found, the game is over
-  return true;
+ var currentHighScore = getHighScore();
+ if (score > currentHighScore){
+  saveHighScore(score);
+  displayHighScore();
+ }
+  return true;  
 }
 
 function MergeRowLeftToRight(row){
@@ -362,4 +368,16 @@ function saveHighScore(score) {
 // Function to retrieve the high score from local storage
 function getHighScore() {
   return localStorage.getItem('highScore');
+}
+
+// Display the high score on the page
+function displayHighScore() {
+  // Get the high score from local storage
+  var highScore = getHighScore();
+
+  // Get the element where you want to display the high score
+  var highScoreDisplayElement = document.getElementById('high-score-display');
+
+  // Update the content of the element with the high score
+  highScoreDisplayElement.textContent = 'High Score: ' + highScore;
 }
